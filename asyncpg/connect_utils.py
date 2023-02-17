@@ -700,8 +700,9 @@ async def _create_ssl_connection(protocol_factory, host, port, *,
                 new_tr = await loop.start_tls(
                     tr, pr, ssl_context, server_hostname=host)
             except (Exception, asyncio.CancelledError):
-                tr.close()
                 raise
+            finally:
+                tr.close()
         else:
             new_tr = tr
 
